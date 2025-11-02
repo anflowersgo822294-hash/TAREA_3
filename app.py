@@ -2,6 +2,7 @@ import streamlit as st
 from modulos.venta import mostrar_venta
 from modulos.login import login
 from modulos.productos import mostrar_productos  # ✅ Esta línea es necesaria
+from modulos.venta import mostrar_venta
 
 # Comprobamos si la sesión ya está iniciada
 if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]:
