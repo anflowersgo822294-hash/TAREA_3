@@ -32,12 +32,11 @@ def login():
     Contra = st.text_input("Contraseña", type="password", key="Contra_input")
 
     if st.button("Iniciar sesión"):
-        tipo = verificar_usuario(Usuario, Contra)
-        if tipo:
-            st.session_state["usuario"] = usuario
-          
-            st.success(f"Bienvenido ({usuario}) 👋")
-            st.session_state["sesion_iniciada"] = True
-            st.rerun()
-        else:
-            st.error("❌ Credenciales incorrectas.")
+    tipo = verificar_usuario(Usuario, Contra)
+    if tipo:
+        st.session_state["usuario"] = Usuario
+        st.success(f"Bienvenido ({Usuario}) 👋")
+        st.session_state["sesion_iniciada"] = True
+        st.rerun()
+    else:
+        st.error("❌ Credenciales incorrectas.")
