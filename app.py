@@ -6,7 +6,7 @@ from modulos.productos import mostrar_productos  # ✅ Esta línea es necesaria
 # Comprobamos si la sesión ya está iniciada
 if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]:
     # Mostrar el menú lateral
-    opciones = ["Ventas", "Productos", "Otra opción"]
+    opciones = ["Ventas", "Productos", "Inicio"]
     seleccion = st.sidebar.selectbox("Selecciona una opción", opciones)
 
     # Según la opción seleccionada, mostramos el contenido correspondiente
