@@ -1,22 +1,14 @@
-# app.py
+# modulos/productos.py
 import streamlit as st
-from modulos.venta import mostrar_venta
-from modulos.login import login
-from modulos.productos import mostrar_productos  # Importación del módulo de productos
+import pandas as pd
 
-# Comprobamos si la sesión ya está iniciada
-if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]:
-    # Mostrar el menú lateral
-    opciones = ["Ventas", "Productos", "Otra opción"]  # Agregamos "Productos" al menú
-    seleccion = st.sidebar.selectbox("Selecciona una opción", opciones)
-
-    # Según la opción seleccionada, mostramos el contenido correspondiente
-    if seleccion == "Ventas":
-        mostrar_venta()
-    elif seleccion == "Productos":
-        mostrar_productos()
-    elif seleccion == "Otra opción":
-        st.write("Has seleccionado otra opción.")
-else:
-    # Si la sesión no está iniciada, mostrar el login
-    login()
+def mostrar_productos():
+    productos = [
+        {"ID": 1, "Nombre": "Shampoo Herbal", "Precio": 4.50, "Stock": 120},
+        {"ID": 2, "Nombre": "Acondicionador Natural", "Precio": 5.25, "Stock": 80},
+        {"ID": 3, "Nombre": "Jabón Artesanal", "Precio": 3.75, "Stock": 150},
+        {"ID": 4, "Nombre": "Aceite Esencial Lavanda", "Precio": 6.00, "Stock": 60},
+    ]
+    df_productos = pd.DataFrame(productos)
+    st.title("Listado de Productos")
+    st.dataframe(df_productos, use_container_width=True)
