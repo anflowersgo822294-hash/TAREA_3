@@ -14,8 +14,8 @@ if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]
         mostrar_venta()
     elif seleccion == "Productos":
         mostrar_productos()
-    elif seleccion == "Otra opción":
-        st.write("Has seleccionado otra opción.")
+    elif seleccion == "inicio":
+        mostrar_inicio()
 else:
     # Si la sesión no está iniciada, mostrar el login
     login()
