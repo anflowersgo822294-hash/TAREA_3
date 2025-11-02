@@ -1,42 +1,43 @@
 import streamlit as st
 from modulos.config.conexion import obtener_conexion
-from modulos.venta import mostrar_venta
 
-def verificar_usuario(Usuario, Contra):
+def verificar_usuario(usuario, contra):
     con = obtener_conexion()
     if not con:
         st.error("⚠️ No se pudo conectar a la base de datos.")
         return None
     else:
-        # ✅ Guardar en el estado que la conexión fue exitosa
         st.session_state["conexion_exitosa"] = True
 
     try:
         cursor = con.cursor()
-        query =  "SELECT Usuario, Contra FROM Clientes WHERE Usuario = %s AND Contra = %s" 
-        cursor.execute(query, (Usuario, Contra))
+        query = "SELECT Nombre FROM Clientes WHERE Usuario = %s AND Contra = %s"
+        cursor.execute(query, (usuario, contra))
         result = cursor.fetchone()
-        return result[0] if result else None
+        return result[0] if result else None  # Devuelve el nombre del cliente
     finally:
         con.close()
 
-
 def login():
-    st.title("Inicio de sesión")
+    st.title("🔐 Inicio de sesión")
 
-    # 🟢 Mostrar mensaje persistente si ya hubo conexión exitosa
+    # Mostrar mensaje si ya hubo conexión exitosa
     if st.session_state.get("conexion_exitosa"):
         st.success("✅ Conexión a la base de datos establecida correctamente.")
 
-    Usuario = st.text_input("Usuario", key="Usuario_input")
-    Contra = st.text_input("Contraseña", type="password", key="Contra_input")
+    usuario = st.text_input("Usuario", key="Usuario_input")
+    contra = st.text_input("Contraseña", type="password", key="Contra_input")
 
     if st.button("Iniciar sesión"):
-        tipo = verificar_usuario(Usuario, Contra)
-        if tipo:
-            st.session_state["usuario"] = Usuario
-            st.success(f"Bienvenido ({Usuario}) 👋")
+        nombre_cliente = verificar_usuario(usuario, contra)
+
+        if nombre_cliente:
             st.session_state["sesion_iniciada"] = True
+            st.session_state["usuario"] = usuario
+            st.session_state["nombre_cliente"] = nombre_cliente
+            st.success(f"Bienvenido, {nombre_cliente} 👋")
             st.rerun()
         else:
             st.error("❌ Credenciales incorrectas.")
+    
+       
