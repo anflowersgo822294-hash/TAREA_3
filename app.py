@@ -1,8 +1,8 @@
 import streamlit as st
 from modulos.venta import mostrar_venta
 from modulos.login import login
-from modulos.productos import mostrar_productos  # ✅ Esta línea es necesaria
-from modulos.venta import mostrar_venta
+from modulos.productos import mostrar_productos
+from modulos.inicio import mostrar_inicio  # ✅ Importación agregada
 
 # Comprobamos si la sesión ya está iniciada
 if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]:
@@ -15,7 +15,7 @@ if "sesion_iniciada" in st.session_state and st.session_state["sesion_iniciada"]
         mostrar_venta()
     elif seleccion == "Productos":
         mostrar_productos()
-    elif seleccion == "inicio":
+    elif seleccion == "Inicio":  # ✅ Corregido: antes decía "inicio"
         mostrar_inicio()
 else:
     # Si la sesión no está iniciada, mostrar el login
