@@ -6,8 +6,8 @@ def verificar_usuario(usuario, contra):
     if not con:
         st.error("⚠️ No se pudo conectar a la base de datos.")
         return None
-    else:
-        st.session_state["conexion_exitosa"] = True
+
+    st.session_state["conexion_exitosa"] = True
 
     try:
         cursor = con.cursor()
@@ -15,6 +15,9 @@ def verificar_usuario(usuario, contra):
         cursor.execute(query, (usuario, contra))
         result = cursor.fetchone()
         return result[0] if result else None  # Devuelve el nombre del cliente
+    except Exception as e:
+        st.error(f"❌ Error al ejecutar la consulta: {e}")
+        return None
     finally:
         con.close()
 
@@ -29,6 +32,10 @@ def login():
     contra = st.text_input("Contraseña", type="password", key="Contra_input")
 
     if st.button("Iniciar sesión"):
+        if not usuario or not contra:
+            st.warning("Por favor, completa ambos campos.")
+            return
+
         nombre_cliente = verificar_usuario(usuario, contra)
 
         if nombre_cliente:
@@ -39,5 +46,4 @@ def login():
             st.rerun()
         else:
             st.error("❌ Credenciales incorrectas.")
-    
        
