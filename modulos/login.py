@@ -14,7 +14,7 @@ def verificar_usuario(usuario, contra):
         query = "SELECT Nombre FROM Clientes WHERE Usuario = %s AND Contra = %s"
         cursor.execute(query, (usuario, contra))
         result = cursor.fetchone()
-        return result[0] if result else None  # Devuelve el nombre del cliente
+        return result[0] if result else None
     except Exception as e:
         st.error(f"❌ Error al ejecutar la consulta: {e}")
         return None
@@ -24,7 +24,6 @@ def verificar_usuario(usuario, contra):
 def login():
     st.title("🔐 Inicio de sesión")
 
-    # Mostrar mensaje si ya hubo conexión exitosa
     if st.session_state.get("conexion_exitosa"):
         st.success("✅ Conexión a la base de datos establecida correctamente.")
 
@@ -33,7 +32,7 @@ def login():
 
     if st.button("Iniciar sesión"):
         if not usuario or not contra:
-            st.warning("Por favor, completa ambos campos.")
+            st.warning("⚠️ Por favor, completa ambos campos.")
             return
 
         nombre_cliente = verificar_usuario(usuario, contra)
