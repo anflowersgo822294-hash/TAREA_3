@@ -6,6 +6,10 @@ from modulos.inicio import mostrar_inicio
 
 # Verificar si la sesión está iniciada
 if st.session_state.get("sesion_iniciada", False):
+    # Mostrar saludo personalizado si el nombre está disponible
+    nombre = st.session_state.get("nombre_cliente", "Cliente")
+    st.sidebar.markdown(f"👤 **Bienvenido, {nombre}**")
+
     # Menú lateral
     seleccion = st.sidebar.selectbox("Selecciona una opción", ["Inicio", "Ventas", "Productos"])
 
