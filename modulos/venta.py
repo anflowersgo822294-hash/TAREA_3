@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-def mostrar_ventas():
+def mostrar_venta():
     # Lista simulada de ventas
     ventas = [
         {"Producto": "Shampoo Herbal", "Cantidad": 3, "Fecha": "2025-11-01"},
