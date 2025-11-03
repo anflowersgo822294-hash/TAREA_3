@@ -12,14 +12,15 @@ def mostrar_clientes():
 
     try:
         cursor = con.cursor()
-        cursor.execute("SELECT ID, Nombre, Usuario FROM Clientes")
+        # Se eliminó la columna ID para evitar el error 1054
+        cursor.execute("SELECT Nombre, Usuario FROM Clientes")
         datos = cursor.fetchall()
 
         if datos:
-            df = pd.DataFrame(datos, columns=["ID", "Nombre", "Usuario"])
+            df = pd.DataFrame(datos, columns=["Nombre", "Usuario"])
             st.dataframe(df, use_container_width=True)
         else:
-            st.info("No hay clientes registrados.")
+            st.info("ℹ️ No hay clientes registrados.")
     except Exception as e:
         st.error(f"⚠️ Error al obtener los datos: {e}")
     finally:
@@ -28,13 +29,13 @@ def mostrar_clientes():
 def registrar_cliente():
     st.subheader("📝 Registrar nuevo cliente")
 
-    nombre = st.text_input("Nombre completo")
-    usuario = st.text_input("Usuario")
-    contra = st.text_input("Contraseña", type="password")
+    nombre = st.text_input("Nombre completo").strip()
+    usuario = st.text_input("Usuario").strip()
+    contra = st.text_input("Contraseña", type="password").strip()
 
     if st.button("Registrar"):
         if not nombre or not usuario or not contra:
-            st.warning("Por favor, completa todos los campos.")
+            st.warning("⚠️ Por favor, completa todos los campos.")
             return
 
         con = obtener_conexion()
@@ -44,6 +45,14 @@ def registrar_cliente():
 
         try:
             cursor = con.cursor()
+
+            # Validación para evitar usuarios duplicados
+            cursor.execute("SELECT COUNT(*) FROM Clientes WHERE Usuario = %s", (usuario,))
+            existe = cursor.fetchone()[0]
+            if existe > 0:
+                st.error("❌ El usuario ya está registrado. Usa otro nombre de usuario.")
+                return
+
             query = "INSERT INTO Clientes (Nombre, Usuario, Contra) VALUES (%s, %s, %s)"
             cursor.execute(query, (nombre, usuario, contra))
             con.commit()
